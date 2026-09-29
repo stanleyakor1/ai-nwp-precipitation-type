@@ -8,5 +8,10 @@ __pycache__/
 *.py[cod]
 .ipynb_checkpoints/
 
+
+# PBS / batch job output files
+*.o[0-9]*
+*.e[0-9]*
+
 .DS_Store
 Thumbs.db
