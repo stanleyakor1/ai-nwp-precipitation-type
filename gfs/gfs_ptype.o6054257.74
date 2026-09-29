@@ -1,0 +1,360 @@
+============================================================
+GFS precipitation-type job
+PBS job ID       : 6054257[74].casper-pbs
+PBS array index  : 74
+Host             : crhtc65
+Initialization   : 2022-02-13 00Z
+CPUs             : 1
+Start time       : Sun Sep 27 05:56:12 PM MDT 2026
+============================================================
+/glade/work/sakor/conda-envs/mlguess/lib/python3.10/site-packages/pyproj/network.py:59: UserWarning: pyproj unable to set PROJ database path.
+  _set_context_ca_bundle_path(ca_bundle_path)
+2026-09-27 17:56:19 | INFO | GFS precipitation-type batch job starting
+2026-09-27 17:56:19 | INFO | Host: crhtc65
+2026-09-27 17:56:19 | INFO | PID: 28321
+2026-09-27 17:56:19 | INFO | PBS_JOBID: 6054257[74].casper-pbs
+2026-09-27 17:56:19 | INFO | Date range: 2022-02-13 through 2022-02-13 (1 initialization(s))
+2026-09-27 17:56:19 | INFO | Cycle: 00Z
+2026-09-27 17:56:19 | INFO | Forecast leads: +006 through +168 h every 6 h
+2026-09-27 17:56:19 | INFO | Base directory: /glade/derecho/scratch/sakor/gfs
+2026-09-27 17:56:19 | INFO | Model: /glade/derecho/scratch/cbecker/ptype_model_20240909.keras
+2026-09-27 17:56:19 | INFO | Scaler: /glade/derecho/scratch/cbecker/ptype_scaler_20240909.json
+2026-09-27 17:56:19 | INFO | S3 workers: 4
+2026-09-27 17:56:19 | INFO | Log file: /glade/derecho/scratch/sakor/gfs/logs/gfs_ptype_20220213_20220213_00z.log
+2026-09-27 17:56:19 | INFO | Loading EDNN model and scaler once for the full date range
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1790553379.670229   28321 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1790553379.720790   28321 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI AVX512_BF16 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1790553383.327339   28321 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+E0000 00:00:1790553387.419679   28321 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+2026-09-27 17:56:27 | INFO | EDNN/scaler loaded successfully; 84 input features
+2026-09-27 17:56:27 | INFO | ==============================================================================
+2026-09-27 17:56:27 | INFO | Initialization: 2022-02-13T00Z
+2026-09-27 17:56:27 | INFO | Output directory: /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z
+2026-09-27 17:56:27 | INFO | [2022-02-13T00Z] Reading f000 inventory for surface terrain
+2026-09-27 17:56:27 | INFO | [2022-02-13T00Z] Downloading GFS HGT:surface
+2026-09-27 17:56:32 | INFO | [20220213 00Z +006] Starting lead
+2026-09-27 17:56:32 | INFO | [20220213 00Z +006] Reading GFS inventory
+2026-09-27 17:56:32 | INFO | [20220213 00Z +006] Downloading pressure-level fields
+2026-09-27 17:56:35 | INFO | [20220213 00Z +006] Downloading native ptype fields
+2026-09-27 17:56:35 | INFO | [20220213 00Z +006] Reading/subsetting GRIB fields
+2026-09-27 17:56:37 | INFO | [20220213 00Z +006] Computing dewpoint and AGL heights
+2026-09-27 17:56:37 | INFO | [20220213 00Z +006] Interpolating profiles to fixed AGL heights
+2026-09-27 17:56:39 | INFO | [20220213 00Z +006] Running EDNN classification
+WARNING:tensorflow:From /glade/work/sakor/AI_NWP/gfs/gfs_ptype.py:209: _EagerTensorBase.cpu (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.identity with explicit device placement instead.
+2026-09-27 17:56:40 | INFO | [20220213 00Z +006] Running Bourgouin classification
+2026-09-27 17:56:41 | INFO | [20220213 00Z +006] Lead complete in 9.2 s
+2026-09-27 17:56:41 | INFO | [2022-02-13T00Z +006] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_006.nc
+2026-09-27 17:56:42 | INFO | [20220213 00Z +012] Starting lead
+2026-09-27 17:56:42 | INFO | [20220213 00Z +012] Reading GFS inventory
+2026-09-27 17:56:42 | INFO | [20220213 00Z +012] Downloading pressure-level fields
+2026-09-27 17:56:45 | INFO | [20220213 00Z +012] Downloading native ptype fields
+2026-09-27 17:56:45 | INFO | [20220213 00Z +012] Reading/subsetting GRIB fields
+2026-09-27 17:56:46 | INFO | [20220213 00Z +012] Computing dewpoint and AGL heights
+2026-09-27 17:56:46 | INFO | [20220213 00Z +012] Interpolating profiles to fixed AGL heights
+2026-09-27 17:56:46 | INFO | [20220213 00Z +012] Running EDNN classification
+2026-09-27 17:56:47 | INFO | [20220213 00Z +012] Running Bourgouin classification
+2026-09-27 17:56:48 | INFO | [20220213 00Z +012] Lead complete in 6.4 s
+2026-09-27 17:56:48 | INFO | [2022-02-13T00Z +012] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_012.nc
+2026-09-27 17:56:48 | INFO | [20220213 00Z +018] Starting lead
+2026-09-27 17:56:48 | INFO | [20220213 00Z +018] Reading GFS inventory
+2026-09-27 17:56:49 | INFO | [20220213 00Z +018] Downloading pressure-level fields
+2026-09-27 17:56:51 | INFO | [20220213 00Z +018] Downloading native ptype fields
+2026-09-27 17:56:52 | INFO | [20220213 00Z +018] Reading/subsetting GRIB fields
+2026-09-27 17:56:53 | INFO | [20220213 00Z +018] Computing dewpoint and AGL heights
+2026-09-27 17:56:53 | INFO | [20220213 00Z +018] Interpolating profiles to fixed AGL heights
+2026-09-27 17:56:53 | INFO | [20220213 00Z +018] Running EDNN classification
+2026-09-27 17:56:54 | INFO | [20220213 00Z +018] Running Bourgouin classification
+2026-09-27 17:56:55 | INFO | [20220213 00Z +018] Lead complete in 6.4 s
+2026-09-27 17:56:55 | INFO | [2022-02-13T00Z +018] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_018.nc
+2026-09-27 17:56:55 | INFO | [20220213 00Z +024] Starting lead
+2026-09-27 17:56:55 | INFO | [20220213 00Z +024] Reading GFS inventory
+2026-09-27 17:56:55 | INFO | [20220213 00Z +024] Downloading pressure-level fields
+2026-09-27 17:56:58 | INFO | [20220213 00Z +024] Downloading native ptype fields
+2026-09-27 17:56:58 | INFO | [20220213 00Z +024] Reading/subsetting GRIB fields
+2026-09-27 17:56:59 | INFO | [20220213 00Z +024] Computing dewpoint and AGL heights
+2026-09-27 17:57:00 | INFO | [20220213 00Z +024] Interpolating profiles to fixed AGL heights
+2026-09-27 17:57:00 | INFO | [20220213 00Z +024] Running EDNN classification
+2026-09-27 17:57:00 | INFO | [20220213 00Z +024] Running Bourgouin classification
+2026-09-27 17:57:01 | INFO | [20220213 00Z +024] Lead complete in 6.2 s
+2026-09-27 17:57:01 | INFO | [2022-02-13T00Z +024] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_024.nc
+2026-09-27 17:57:02 | INFO | [20220213 00Z +030] Starting lead
+2026-09-27 17:57:02 | INFO | [20220213 00Z +030] Reading GFS inventory
+2026-09-27 17:57:02 | INFO | [20220213 00Z +030] Downloading pressure-level fields
+2026-09-27 17:57:04 | INFO | [20220213 00Z +030] Downloading native ptype fields
+2026-09-27 17:57:05 | INFO | [20220213 00Z +030] Reading/subsetting GRIB fields
+2026-09-27 17:57:06 | INFO | [20220213 00Z +030] Computing dewpoint and AGL heights
+2026-09-27 17:57:06 | INFO | [20220213 00Z +030] Interpolating profiles to fixed AGL heights
+2026-09-27 17:57:06 | INFO | [20220213 00Z +030] Running EDNN classification
+2026-09-27 17:57:07 | INFO | [20220213 00Z +030] Running Bourgouin classification
+2026-09-27 17:57:08 | INFO | [20220213 00Z +030] Lead complete in 6.3 s
+2026-09-27 17:57:08 | INFO | [2022-02-13T00Z +030] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_030.nc
+2026-09-27 17:57:08 | INFO | [20220213 00Z +036] Starting lead
+2026-09-27 17:57:08 | INFO | [20220213 00Z +036] Reading GFS inventory
+2026-09-27 17:57:08 | INFO | [20220213 00Z +036] Downloading pressure-level fields
+2026-09-27 17:57:11 | INFO | [20220213 00Z +036] Downloading native ptype fields
+2026-09-27 17:57:11 | INFO | [20220213 00Z +036] Reading/subsetting GRIB fields
+2026-09-27 17:57:13 | INFO | [20220213 00Z +036] Computing dewpoint and AGL heights
+2026-09-27 17:57:13 | INFO | [20220213 00Z +036] Interpolating profiles to fixed AGL heights
+2026-09-27 17:57:13 | INFO | [20220213 00Z +036] Running EDNN classification
+2026-09-27 17:57:13 | INFO | [20220213 00Z +036] Running Bourgouin classification
+2026-09-27 17:57:14 | INFO | [20220213 00Z +036] Lead complete in 6.3 s
+2026-09-27 17:57:14 | INFO | [2022-02-13T00Z +036] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_036.nc
+2026-09-27 17:57:15 | INFO | [20220213 00Z +042] Starting lead
+2026-09-27 17:57:15 | INFO | [20220213 00Z +042] Reading GFS inventory
+2026-09-27 17:57:15 | INFO | [20220213 00Z +042] Downloading pressure-level fields
+2026-09-27 17:57:17 | INFO | [20220213 00Z +042] Downloading native ptype fields
+2026-09-27 17:57:17 | INFO | [20220213 00Z +042] Reading/subsetting GRIB fields
+2026-09-27 17:57:19 | INFO | [20220213 00Z +042] Computing dewpoint and AGL heights
+2026-09-27 17:57:19 | INFO | [20220213 00Z +042] Interpolating profiles to fixed AGL heights
+2026-09-27 17:57:19 | INFO | [20220213 00Z +042] Running EDNN classification
+2026-09-27 17:57:19 | INFO | [20220213 00Z +042] Running Bourgouin classification
+2026-09-27 17:57:21 | INFO | [20220213 00Z +042] Lead complete in 6.0 s
+2026-09-27 17:57:21 | INFO | [2022-02-13T00Z +042] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_042.nc
+2026-09-27 17:57:21 | INFO | [20220213 00Z +048] Starting lead
+2026-09-27 17:57:21 | INFO | [20220213 00Z +048] Reading GFS inventory
+2026-09-27 17:57:21 | INFO | [20220213 00Z +048] Downloading pressure-level fields
+2026-09-27 17:57:24 | INFO | [20220213 00Z +048] Downloading native ptype fields
+2026-09-27 17:57:24 | INFO | [20220213 00Z +048] Reading/subsetting GRIB fields
+2026-09-27 17:57:26 | INFO | [20220213 00Z +048] Computing dewpoint and AGL heights
+2026-09-27 17:57:26 | INFO | [20220213 00Z +048] Interpolating profiles to fixed AGL heights
+2026-09-27 17:57:26 | INFO | [20220213 00Z +048] Running EDNN classification
+2026-09-27 17:57:27 | INFO | [20220213 00Z +048] Running Bourgouin classification
+2026-09-27 17:57:28 | INFO | [20220213 00Z +048] Lead complete in 6.9 s
+2026-09-27 17:57:28 | INFO | [2022-02-13T00Z +048] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_048.nc
+2026-09-27 17:57:28 | INFO | [20220213 00Z +054] Starting lead
+2026-09-27 17:57:28 | INFO | [20220213 00Z +054] Reading GFS inventory
+2026-09-27 17:57:28 | INFO | [20220213 00Z +054] Downloading pressure-level fields
+2026-09-27 17:57:31 | INFO | [20220213 00Z +054] Downloading native ptype fields
+2026-09-27 17:57:31 | INFO | [20220213 00Z +054] Reading/subsetting GRIB fields
+2026-09-27 17:57:33 | INFO | [20220213 00Z +054] Computing dewpoint and AGL heights
+2026-09-27 17:57:33 | INFO | [20220213 00Z +054] Interpolating profiles to fixed AGL heights
+2026-09-27 17:57:33 | INFO | [20220213 00Z +054] Running EDNN classification
+2026-09-27 17:57:33 | INFO | [20220213 00Z +054] Running Bourgouin classification
+2026-09-27 17:57:35 | INFO | [20220213 00Z +054] Lead complete in 6.6 s
+2026-09-27 17:57:35 | INFO | [2022-02-13T00Z +054] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_054.nc
+2026-09-27 17:57:35 | INFO | [20220213 00Z +060] Starting lead
+2026-09-27 17:57:35 | INFO | [20220213 00Z +060] Reading GFS inventory
+2026-09-27 17:57:35 | INFO | [20220213 00Z +060] Downloading pressure-level fields
+2026-09-27 17:57:38 | INFO | [20220213 00Z +060] Downloading native ptype fields
+2026-09-27 17:57:38 | INFO | [20220213 00Z +060] Reading/subsetting GRIB fields
+2026-09-27 17:57:40 | INFO | [20220213 00Z +060] Computing dewpoint and AGL heights
+2026-09-27 17:57:40 | INFO | [20220213 00Z +060] Interpolating profiles to fixed AGL heights
+2026-09-27 17:57:40 | INFO | [20220213 00Z +060] Running EDNN classification
+2026-09-27 17:57:40 | INFO | [20220213 00Z +060] Running Bourgouin classification
+2026-09-27 17:57:42 | INFO | [20220213 00Z +060] Lead complete in 6.8 s
+2026-09-27 17:57:42 | INFO | [2022-02-13T00Z +060] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_060.nc
+2026-09-27 17:57:42 | INFO | [20220213 00Z +066] Starting lead
+2026-09-27 17:57:42 | INFO | [20220213 00Z +066] Reading GFS inventory
+2026-09-27 17:57:42 | INFO | [20220213 00Z +066] Downloading pressure-level fields
+2026-09-27 17:57:44 | INFO | [20220213 00Z +066] Downloading native ptype fields
+2026-09-27 17:57:45 | INFO | [20220213 00Z +066] Reading/subsetting GRIB fields
+2026-09-27 17:57:46 | INFO | [20220213 00Z +066] Computing dewpoint and AGL heights
+2026-09-27 17:57:46 | INFO | [20220213 00Z +066] Interpolating profiles to fixed AGL heights
+2026-09-27 17:57:46 | INFO | [20220213 00Z +066] Running EDNN classification
+2026-09-27 17:57:47 | INFO | [20220213 00Z +066] Running Bourgouin classification
+2026-09-27 17:57:48 | INFO | [20220213 00Z +066] Lead complete in 5.9 s
+2026-09-27 17:57:48 | INFO | [2022-02-13T00Z +066] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_066.nc
+2026-09-27 17:57:48 | INFO | [20220213 00Z +072] Starting lead
+2026-09-27 17:57:48 | INFO | [20220213 00Z +072] Reading GFS inventory
+2026-09-27 17:57:48 | INFO | [20220213 00Z +072] Downloading pressure-level fields
+2026-09-27 17:57:51 | INFO | [20220213 00Z +072] Downloading native ptype fields
+2026-09-27 17:57:51 | INFO | [20220213 00Z +072] Reading/subsetting GRIB fields
+2026-09-27 17:57:53 | INFO | [20220213 00Z +072] Computing dewpoint and AGL heights
+2026-09-27 17:57:53 | INFO | [20220213 00Z +072] Interpolating profiles to fixed AGL heights
+2026-09-27 17:57:53 | INFO | [20220213 00Z +072] Running EDNN classification
+2026-09-27 17:57:53 | INFO | [20220213 00Z +072] Running Bourgouin classification
+2026-09-27 17:57:55 | INFO | [20220213 00Z +072] Lead complete in 6.4 s
+2026-09-27 17:57:55 | INFO | [2022-02-13T00Z +072] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_072.nc
+2026-09-27 17:57:55 | INFO | [20220213 00Z +078] Starting lead
+2026-09-27 17:57:55 | INFO | [20220213 00Z +078] Reading GFS inventory
+2026-09-27 17:57:55 | INFO | [20220213 00Z +078] Downloading pressure-level fields
+2026-09-27 17:57:58 | INFO | [20220213 00Z +078] Downloading native ptype fields
+2026-09-27 17:57:58 | INFO | [20220213 00Z +078] Reading/subsetting GRIB fields
+2026-09-27 17:57:59 | INFO | [20220213 00Z +078] Computing dewpoint and AGL heights
+2026-09-27 17:57:59 | INFO | [20220213 00Z +078] Interpolating profiles to fixed AGL heights
+2026-09-27 17:57:59 | INFO | [20220213 00Z +078] Running EDNN classification
+2026-09-27 17:58:00 | INFO | [20220213 00Z +078] Running Bourgouin classification
+2026-09-27 17:58:01 | INFO | [20220213 00Z +078] Lead complete in 6.2 s
+2026-09-27 17:58:01 | INFO | [2022-02-13T00Z +078] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_078.nc
+2026-09-27 17:58:01 | INFO | [20220213 00Z +084] Starting lead
+2026-09-27 17:58:01 | INFO | [20220213 00Z +084] Reading GFS inventory
+2026-09-27 17:58:02 | INFO | [20220213 00Z +084] Downloading pressure-level fields
+2026-09-27 17:58:04 | INFO | [20220213 00Z +084] Downloading native ptype fields
+2026-09-27 17:58:04 | INFO | [20220213 00Z +084] Reading/subsetting GRIB fields
+2026-09-27 17:58:06 | INFO | [20220213 00Z +084] Computing dewpoint and AGL heights
+2026-09-27 17:58:06 | INFO | [20220213 00Z +084] Interpolating profiles to fixed AGL heights
+2026-09-27 17:58:06 | INFO | [20220213 00Z +084] Running EDNN classification
+2026-09-27 17:58:06 | INFO | [20220213 00Z +084] Running Bourgouin classification
+2026-09-27 17:58:08 | INFO | [20220213 00Z +084] Lead complete in 6.4 s
+2026-09-27 17:58:08 | INFO | [2022-02-13T00Z +084] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_084.nc
+2026-09-27 17:58:08 | INFO | [20220213 00Z +090] Starting lead
+2026-09-27 17:58:08 | INFO | [20220213 00Z +090] Reading GFS inventory
+2026-09-27 17:58:08 | INFO | [20220213 00Z +090] Downloading pressure-level fields
+2026-09-27 17:58:11 | INFO | [20220213 00Z +090] Downloading native ptype fields
+2026-09-27 17:58:11 | INFO | [20220213 00Z +090] Reading/subsetting GRIB fields
+2026-09-27 17:58:13 | INFO | [20220213 00Z +090] Computing dewpoint and AGL heights
+2026-09-27 17:58:13 | INFO | [20220213 00Z +090] Interpolating profiles to fixed AGL heights
+2026-09-27 17:58:13 | INFO | [20220213 00Z +090] Running EDNN classification
+2026-09-27 17:58:13 | INFO | [20220213 00Z +090] Running Bourgouin classification
+2026-09-27 17:58:14 | INFO | [20220213 00Z +090] Lead complete in 6.3 s
+2026-09-27 17:58:14 | INFO | [2022-02-13T00Z +090] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_090.nc
+2026-09-27 17:58:15 | INFO | [20220213 00Z +096] Starting lead
+2026-09-27 17:58:15 | INFO | [20220213 00Z +096] Reading GFS inventory
+2026-09-27 17:58:15 | INFO | [20220213 00Z +096] Downloading pressure-level fields
+2026-09-27 17:58:17 | INFO | [20220213 00Z +096] Downloading native ptype fields
+2026-09-27 17:58:18 | INFO | [20220213 00Z +096] Reading/subsetting GRIB fields
+2026-09-27 17:58:19 | INFO | [20220213 00Z +096] Computing dewpoint and AGL heights
+2026-09-27 17:58:19 | INFO | [20220213 00Z +096] Interpolating profiles to fixed AGL heights
+2026-09-27 17:58:19 | INFO | [20220213 00Z +096] Running EDNN classification
+2026-09-27 17:58:20 | INFO | [20220213 00Z +096] Running Bourgouin classification
+2026-09-27 17:58:21 | INFO | [20220213 00Z +096] Lead complete in 6.3 s
+2026-09-27 17:58:21 | INFO | [2022-02-13T00Z +096] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_096.nc
+2026-09-27 17:58:21 | INFO | [20220213 00Z +102] Starting lead
+2026-09-27 17:58:21 | INFO | [20220213 00Z +102] Reading GFS inventory
+2026-09-27 17:58:21 | INFO | [20220213 00Z +102] Downloading pressure-level fields
+2026-09-27 17:58:24 | INFO | [20220213 00Z +102] Downloading native ptype fields
+2026-09-27 17:58:24 | INFO | [20220213 00Z +102] Reading/subsetting GRIB fields
+2026-09-27 17:58:25 | INFO | [20220213 00Z +102] Computing dewpoint and AGL heights
+2026-09-27 17:58:25 | INFO | [20220213 00Z +102] Interpolating profiles to fixed AGL heights
+2026-09-27 17:58:25 | INFO | [20220213 00Z +102] Running EDNN classification
+2026-09-27 17:58:26 | INFO | [20220213 00Z +102] Running Bourgouin classification
+2026-09-27 17:58:28 | INFO | [20220213 00Z +102] Lead complete in 6.3 s
+2026-09-27 17:58:28 | INFO | [2022-02-13T00Z +102] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_102.nc
+2026-09-27 17:58:28 | INFO | [20220213 00Z +108] Starting lead
+2026-09-27 17:58:28 | INFO | [20220213 00Z +108] Reading GFS inventory
+2026-09-27 17:58:28 | INFO | [20220213 00Z +108] Downloading pressure-level fields
+2026-09-27 17:58:31 | INFO | [20220213 00Z +108] Downloading native ptype fields
+2026-09-27 17:58:31 | INFO | [20220213 00Z +108] Reading/subsetting GRIB fields
+2026-09-27 17:58:32 | INFO | [20220213 00Z +108] Computing dewpoint and AGL heights
+2026-09-27 17:58:32 | INFO | [20220213 00Z +108] Interpolating profiles to fixed AGL heights
+2026-09-27 17:58:32 | INFO | [20220213 00Z +108] Running EDNN classification
+2026-09-27 17:58:33 | INFO | [20220213 00Z +108] Running Bourgouin classification
+2026-09-27 17:58:34 | INFO | [20220213 00Z +108] Lead complete in 6.4 s
+2026-09-27 17:58:34 | INFO | [2022-02-13T00Z +108] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_108.nc
+2026-09-27 17:58:34 | INFO | [20220213 00Z +114] Starting lead
+2026-09-27 17:58:34 | INFO | [20220213 00Z +114] Reading GFS inventory
+2026-09-27 17:58:35 | INFO | [20220213 00Z +114] Downloading pressure-level fields
+2026-09-27 17:58:37 | INFO | [20220213 00Z +114] Downloading native ptype fields
+2026-09-27 17:58:37 | INFO | [20220213 00Z +114] Reading/subsetting GRIB fields
+2026-09-27 17:58:39 | INFO | [20220213 00Z +114] Computing dewpoint and AGL heights
+2026-09-27 17:58:39 | INFO | [20220213 00Z +114] Interpolating profiles to fixed AGL heights
+2026-09-27 17:58:39 | INFO | [20220213 00Z +114] Running EDNN classification
+2026-09-27 17:58:40 | INFO | [20220213 00Z +114] Running Bourgouin classification
+2026-09-27 17:58:41 | INFO | [20220213 00Z +114] Lead complete in 6.4 s
+2026-09-27 17:58:41 | INFO | [2022-02-13T00Z +114] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_114.nc
+2026-09-27 17:58:41 | INFO | [20220213 00Z +120] Starting lead
+2026-09-27 17:58:41 | INFO | [20220213 00Z +120] Reading GFS inventory
+2026-09-27 17:58:42 | INFO | [20220213 00Z +120] Downloading pressure-level fields
+2026-09-27 17:58:44 | INFO | [20220213 00Z +120] Downloading native ptype fields
+2026-09-27 17:58:44 | INFO | [20220213 00Z +120] Reading/subsetting GRIB fields
+2026-09-27 17:58:46 | INFO | [20220213 00Z +120] Computing dewpoint and AGL heights
+2026-09-27 17:58:46 | INFO | [20220213 00Z +120] Interpolating profiles to fixed AGL heights
+2026-09-27 17:58:46 | INFO | [20220213 00Z +120] Running EDNN classification
+2026-09-27 17:58:46 | INFO | [20220213 00Z +120] Running Bourgouin classification
+2026-09-27 17:58:48 | INFO | [20220213 00Z +120] Lead complete in 6.5 s
+2026-09-27 17:58:48 | INFO | [2022-02-13T00Z +120] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_120.nc
+2026-09-27 17:58:48 | INFO | [20220213 00Z +126] Starting lead
+2026-09-27 17:58:48 | INFO | [20220213 00Z +126] Reading GFS inventory
+2026-09-27 17:58:48 | INFO | [20220213 00Z +126] Downloading pressure-level fields
+2026-09-27 17:58:51 | INFO | [20220213 00Z +126] Downloading native ptype fields
+2026-09-27 17:58:51 | INFO | [20220213 00Z +126] Reading/subsetting GRIB fields
+2026-09-27 17:58:52 | INFO | [20220213 00Z +126] Computing dewpoint and AGL heights
+2026-09-27 17:58:52 | INFO | [20220213 00Z +126] Interpolating profiles to fixed AGL heights
+2026-09-27 17:58:52 | INFO | [20220213 00Z +126] Running EDNN classification
+2026-09-27 17:58:53 | INFO | [20220213 00Z +126] Running Bourgouin classification
+2026-09-27 17:58:54 | INFO | [20220213 00Z +126] Lead complete in 6.3 s
+2026-09-27 17:58:54 | INFO | [2022-02-13T00Z +126] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_126.nc
+2026-09-27 17:58:55 | INFO | [20220213 00Z +132] Starting lead
+2026-09-27 17:58:55 | INFO | [20220213 00Z +132] Reading GFS inventory
+2026-09-27 17:58:55 | INFO | [20220213 00Z +132] Downloading pressure-level fields
+2026-09-27 17:58:58 | INFO | [20220213 00Z +132] Downloading native ptype fields
+2026-09-27 17:58:58 | INFO | [20220213 00Z +132] Reading/subsetting GRIB fields
+2026-09-27 17:58:59 | INFO | [20220213 00Z +132] Computing dewpoint and AGL heights
+2026-09-27 17:58:59 | INFO | [20220213 00Z +132] Interpolating profiles to fixed AGL heights
+2026-09-27 17:58:59 | INFO | [20220213 00Z +132] Running EDNN classification
+2026-09-27 17:59:00 | INFO | [20220213 00Z +132] Running Bourgouin classification
+2026-09-27 17:59:01 | INFO | [20220213 00Z +132] Lead complete in 6.7 s
+2026-09-27 17:59:01 | INFO | [2022-02-13T00Z +132] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_132.nc
+2026-09-27 17:59:01 | INFO | [20220213 00Z +138] Starting lead
+2026-09-27 17:59:01 | INFO | [20220213 00Z +138] Reading GFS inventory
+2026-09-27 17:59:02 | INFO | [20220213 00Z +138] Downloading pressure-level fields
+2026-09-27 17:59:05 | INFO | [20220213 00Z +138] Downloading native ptype fields
+2026-09-27 17:59:05 | INFO | [20220213 00Z +138] Reading/subsetting GRIB fields
+2026-09-27 17:59:06 | INFO | [20220213 00Z +138] Computing dewpoint and AGL heights
+2026-09-27 17:59:06 | INFO | [20220213 00Z +138] Interpolating profiles to fixed AGL heights
+2026-09-27 17:59:06 | INFO | [20220213 00Z +138] Running EDNN classification
+2026-09-27 17:59:07 | INFO | [20220213 00Z +138] Running Bourgouin classification
+2026-09-27 17:59:08 | INFO | [20220213 00Z +138] Lead complete in 6.8 s
+2026-09-27 17:59:08 | INFO | [2022-02-13T00Z +138] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_138.nc
+2026-09-27 17:59:09 | INFO | [20220213 00Z +144] Starting lead
+2026-09-27 17:59:09 | INFO | [20220213 00Z +144] Reading GFS inventory
+2026-09-27 17:59:09 | INFO | [20220213 00Z +144] Downloading pressure-level fields
+2026-09-27 17:59:11 | INFO | [20220213 00Z +144] Downloading native ptype fields
+2026-09-27 17:59:11 | INFO | [20220213 00Z +144] Reading/subsetting GRIB fields
+2026-09-27 17:59:13 | INFO | [20220213 00Z +144] Computing dewpoint and AGL heights
+2026-09-27 17:59:13 | INFO | [20220213 00Z +144] Interpolating profiles to fixed AGL heights
+2026-09-27 17:59:13 | INFO | [20220213 00Z +144] Running EDNN classification
+2026-09-27 17:59:13 | INFO | [20220213 00Z +144] Running Bourgouin classification
+2026-09-27 17:59:15 | INFO | [20220213 00Z +144] Lead complete in 6.3 s
+2026-09-27 17:59:15 | INFO | [2022-02-13T00Z +144] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_144.nc
+2026-09-27 17:59:15 | INFO | [20220213 00Z +150] Starting lead
+2026-09-27 17:59:15 | INFO | [20220213 00Z +150] Reading GFS inventory
+2026-09-27 17:59:15 | INFO | [20220213 00Z +150] Downloading pressure-level fields
+2026-09-27 17:59:18 | INFO | [20220213 00Z +150] Downloading native ptype fields
+2026-09-27 17:59:18 | INFO | [20220213 00Z +150] Reading/subsetting GRIB fields
+2026-09-27 17:59:20 | INFO | [20220213 00Z +150] Computing dewpoint and AGL heights
+2026-09-27 17:59:20 | INFO | [20220213 00Z +150] Interpolating profiles to fixed AGL heights
+2026-09-27 17:59:20 | INFO | [20220213 00Z +150] Running EDNN classification
+2026-09-27 17:59:20 | INFO | [20220213 00Z +150] Running Bourgouin classification
+2026-09-27 17:59:21 | INFO | [20220213 00Z +150] Lead complete in 6.3 s
+2026-09-27 17:59:21 | INFO | [2022-02-13T00Z +150] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_150.nc
+2026-09-27 17:59:22 | INFO | [20220213 00Z +156] Starting lead
+2026-09-27 17:59:22 | INFO | [20220213 00Z +156] Reading GFS inventory
+2026-09-27 17:59:22 | INFO | [20220213 00Z +156] Downloading pressure-level fields
+2026-09-27 17:59:25 | INFO | [20220213 00Z +156] Downloading native ptype fields
+2026-09-27 17:59:25 | INFO | [20220213 00Z +156] Reading/subsetting GRIB fields
+2026-09-27 17:59:27 | INFO | [20220213 00Z +156] Computing dewpoint and AGL heights
+2026-09-27 17:59:27 | INFO | [20220213 00Z +156] Interpolating profiles to fixed AGL heights
+2026-09-27 17:59:27 | INFO | [20220213 00Z +156] Running EDNN classification
+2026-09-27 17:59:27 | INFO | [20220213 00Z +156] Running Bourgouin classification
+2026-09-27 17:59:28 | INFO | [20220213 00Z +156] Lead complete in 6.7 s
+2026-09-27 17:59:28 | INFO | [2022-02-13T00Z +156] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_156.nc
+2026-09-27 17:59:29 | INFO | [20220213 00Z +162] Starting lead
+2026-09-27 17:59:29 | INFO | [20220213 00Z +162] Reading GFS inventory
+2026-09-27 17:59:29 | INFO | [20220213 00Z +162] Downloading pressure-level fields
+2026-09-27 17:59:31 | INFO | [20220213 00Z +162] Downloading native ptype fields
+2026-09-27 17:59:32 | INFO | [20220213 00Z +162] Reading/subsetting GRIB fields
+2026-09-27 17:59:33 | INFO | [20220213 00Z +162] Computing dewpoint and AGL heights
+2026-09-27 17:59:33 | INFO | [20220213 00Z +162] Interpolating profiles to fixed AGL heights
+2026-09-27 17:59:33 | INFO | [20220213 00Z +162] Running EDNN classification
+2026-09-27 17:59:34 | INFO | [20220213 00Z +162] Running Bourgouin classification
+2026-09-27 17:59:35 | INFO | [20220213 00Z +162] Lead complete in 6.3 s
+2026-09-27 17:59:35 | INFO | [2022-02-13T00Z +162] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_162.nc
+2026-09-27 17:59:35 | INFO | [20220213 00Z +168] Starting lead
+2026-09-27 17:59:35 | INFO | [20220213 00Z +168] Reading GFS inventory
+2026-09-27 17:59:35 | INFO | [20220213 00Z +168] Downloading pressure-level fields
+2026-09-27 17:59:38 | INFO | [20220213 00Z +168] Downloading native ptype fields
+2026-09-27 17:59:38 | INFO | [20220213 00Z +168] Reading/subsetting GRIB fields
+2026-09-27 17:59:40 | INFO | [20220213 00Z +168] Computing dewpoint and AGL heights
+2026-09-27 17:59:40 | INFO | [20220213 00Z +168] Interpolating profiles to fixed AGL heights
+2026-09-27 17:59:40 | INFO | [20220213 00Z +168] Running EDNN classification
+2026-09-27 17:59:40 | INFO | [20220213 00Z +168] Running Bourgouin classification
+2026-09-27 17:59:42 | INFO | [20220213 00Z +168] Lead complete in 6.3 s
+2026-09-27 17:59:42 | INFO | [2022-02-13T00Z +168] Writing /glade/derecho/scratch/sakor/gfs/processed/2022-02-13T00Z/gfs_2022-02-13T00Z_168.nc
+2026-09-27 17:59:42 | INFO | [2022-02-13T00Z] Finished in 3.2 min | written=28 skipped=0
+2026-09-27 17:59:42 | INFO | ==============================================================================
+2026-09-27 17:59:42 | INFO | BATCH SUMMARY
+2026-09-27 17:59:42 | INFO | Completed initializations: 1
+2026-09-27 17:59:42 | INFO | Failed initializations: 0
+2026-09-27 17:59:42 | INFO | Total wall time: 0.06 h
+2026-09-27 17:59:42 | INFO | All requested initializations completed successfully.
+============================================================
+Initialization   : 2022-02-13 00Z
+Exit status      : 0
+End time         : Sun Sep 27 05:59:43 PM MDT 2026
+============================================================

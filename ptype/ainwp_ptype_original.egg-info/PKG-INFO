@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: ainwp-ptype-original
+Version: 0.1.0
+Summary: Modular AI-NWP ptype pipeline preserving notebook numerics
+Requires-Python: >=3.10
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: xarray
+Requires-Dist: metpy
+Requires-Dist: numba
+Requires-Dist: netCDF4

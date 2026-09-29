@@ -1,0 +1,12 @@
+*.nc
+
+cache/
+logs/
+__MACOSX/
+
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+.DS_Store
+Thumbs.db

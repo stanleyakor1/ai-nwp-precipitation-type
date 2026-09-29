@@ -1,0 +1,133 @@
+#!/bin/bash
+#PBS -N graphcast_cpu_test
+#PBS -A NAML0001
+#PBS -q main
+#PBS -l select=1:ncpus=8:mpiprocs=1:mem=128GB
+#PBS -l walltime=24:00:00
+#PBS -j oe
+#PBS -k eod
+
+set -uo pipefail
+
+# ----------------------------------------------------------------------
+# GraphCast Operational / Earth2Studio CPU dry-test job
+# ----------------------------------------------------------------------
+
+BASE=/glade/work/sakor/AI_NWP
+SCRIPT=${BASE}/scripts/run_graphcast_forecast.py
+OUTPUT_DIR=/glade/derecho/scratch/sakor/bulk/era5_init/graphcast
+
+START_DATE=2022-03-22
+END_DATE=2022-04-01
+FORECAST_HOURS=168
+
+# ----------------------------------------------------------------------
+# Environment
+# ----------------------------------------------------------------------
+
+module purge
+module load ncarenv
+
+source /glade/u/home/sakor/.bashrc
+conda activate /glade/work/sakor/conda-envs/graphcast-nwp
+
+PYTHON=$(which python)
+
+# ----------------------------------------------------------------------
+# Shared Earth2Studio caches
+# ----------------------------------------------------------------------
+
+export AI_NWP_BASE=${BASE}
+export EARTH2STUDIO_MODEL_CACHE=${BASE}/cache/models
+export EARTH2STUDIO_DATA_CACHE=${BASE}/cache/era5
+export EARTH2STUDIO_PACKAGE_TIMEOUT=3600
+
+# CPU settings
+export JAX_PLATFORMS=cpu
+export OMP_NUM_THREADS=8
+export MKL_NUM_THREADS=8
+export OPENBLAS_NUM_THREADS=8
+export NUMEXPR_NUM_THREADS=8
+
+# ----------------------------------------------------------------------
+# Temporary directory
+# ----------------------------------------------------------------------
+
+export TMPDIR=/glade/derecho/scratch/${USER}/tmp/graphcast_${PBS_JOBID}
+mkdir -p "${TMPDIR}"
+
+cleanup() {
+    rm -rf "${TMPDIR}"
+}
+trap cleanup EXIT
+
+mkdir -p \
+    "${OUTPUT_DIR}" \
+    "${BASE}/logs/graphcast" \
+    "${BASE}/cache/models" \
+    "${BASE}/cache/era5"
+
+# ----------------------------------------------------------------------
+# Job information
+# ----------------------------------------------------------------------
+
+echo "======================================================================"
+echo "GRAPHCAST CPU TEST"
+echo "======================================================================"
+echo "Job ID         : ${PBS_JOBID}"
+echo "Host           : $(hostname)"
+echo "Project        : ${PBS_ACCOUNT:-NAML0001}"
+echo "Working dir    : ${PBS_O_WORKDIR:-unknown}"
+echo "Conda env      : ${CONDA_PREFIX:-unknown}"
+echo "Python         : ${PYTHON}"
+echo "Script         : ${SCRIPT}"
+echo "Date range     : ${START_DATE} through ${END_DATE}, inclusive"
+echo "Forecast hours : ${FORECAST_HOURS}"
+echo "Output dir     : ${OUTPUT_DIR}"
+echo "ERA5 cache     : ${EARTH2STUDIO_DATA_CACHE}"
+echo "Start time     : $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+echo "======================================================================"
+
+# ----------------------------------------------------------------------
+# Environment check
+# ----------------------------------------------------------------------
+
+"${PYTHON}" - <<'PY'
+import sys
+import torch
+import jax
+import earth2studio
+
+print("Python:", sys.executable)
+print("Earth2Studio:", earth2studio.__version__)
+print("PyTorch:", torch.__version__)
+print("JAX:", jax.__version__)
+print("JAX devices:", jax.devices())
+print("Requested execution: CPU")
+PY
+
+check_status=$?
+
+if [ "${check_status}" -ne 0 ]; then
+    echo "Environment check failed."
+    exit "${check_status}"
+fi
+
+# ----------------------------------------------------------------------
+# Run GraphCast
+# ----------------------------------------------------------------------
+
+"${PYTHON}" -u "${SCRIPT}" \
+    --start "${START_DATE}" \
+    --end "${END_DATE}" \
+    --forecast-hours "${FORECAST_HOURS}" \
+    --output-dir "${OUTPUT_DIR}"
+
+status=$?
+
+echo "======================================================================"
+echo "End time       : $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+echo "Exit status    : ${status}"
+echo "======================================================================"
+
+exit "${status}"

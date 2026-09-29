@@ -1,0 +1,151 @@
+
+#!/bin/bash
+#PBS -N aurora_cpu_test
+#PBS -A NAML0001
+#PBS -q main
+#PBS -l select=1:ncpus=8:mpiprocs=1:mem=128GB
+##PBS -l select=1:ncpus=8:mpiprocs=1:ngpus=1:gpu_type=a100_80gb:mem=128GB
+#PBS -l walltime=24:00:00
+#PBS -j oe
+#PBS -k eod
+
+set -uo pipefail
+
+# ----------------------------------------------------------------------
+# Microsoft Aurora / Earth2Studio CPU dry test
+# ----------------------------------------------------------------------
+
+BASE=/glade/work/sakor/AI_NWP
+SCRIPT=${BASE}/scripts/run_aurora_gpu_forecasts.py
+OUTPUT_DIR=/glade/derecho/scratch/sakor/bulk/era5_init/aurora
+
+START_DATE=2021-11-24
+END_DATE=2021-11-25
+
+# ----------------------------------------------------------------------
+# Environment
+# ----------------------------------------------------------------------
+
+module purge
+module load ncarenv
+
+source /glade/u/home/sakor/.bashrc
+conda activate /glade/work/sakor/conda-envs/aurora-nwp
+
+PYTHON=$(which python)
+
+# ----------------------------------------------------------------------
+# Shared Earth2Studio caches
+# ----------------------------------------------------------------------
+
+export AI_NWP_BASE=${BASE}
+export EARTH2STUDIO_MODEL_CACHE=${BASE}/cache/models
+export EARTH2STUDIO_DATA_CACHE=${BASE}/cache/era5
+export EARTH2STUDIO_PACKAGE_TIMEOUT=3600
+
+# CPU threading
+export OMP_NUM_THREADS=8
+export MKL_NUM_THREADS=8
+export OPENBLAS_NUM_THREADS=8
+export NUMEXPR_NUM_THREADS=8
+
+# ----------------------------------------------------------------------
+# Temporary directory
+# ----------------------------------------------------------------------
+
+export TMPDIR=/glade/derecho/scratch/${USER}/tmp/aurora_${PBS_JOBID}
+mkdir -p "${TMPDIR}"
+
+cleanup() {
+    rm -rf "${TMPDIR}"
+}
+
+trap cleanup EXIT
+
+# ----------------------------------------------------------------------
+# Required directories
+# ----------------------------------------------------------------------
+
+mkdir -p \
+    "${OUTPUT_DIR}" \
+    "${BASE}/logs/aurora" \
+    "${BASE}/cache/models" \
+    "${BASE}/cache/era5"
+
+# ----------------------------------------------------------------------
+# Job information
+# ----------------------------------------------------------------------
+
+echo "======================================================================"
+echo "AURORA CPU TEST"
+echo "======================================================================"
+echo "Job ID       : ${PBS_JOBID}"
+echo "Host         : $(hostname)"
+echo "Project      : ${PBS_ACCOUNT:-NAML0001}"
+echo "Working dir  : ${PBS_O_WORKDIR:-unknown}"
+echo "Conda env    : ${CONDA_PREFIX:-unknown}"
+echo "Python       : ${PYTHON}"
+echo "Script       : ${SCRIPT}"
+echo "Date range   : ${START_DATE} through ${END_DATE}, inclusive"
+echo "Output dir   : ${OUTPUT_DIR}"
+echo "ERA5 cache   : ${EARTH2STUDIO_DATA_CACHE}"
+echo "OMP threads  : ${OMP_NUM_THREADS}"
+echo "Start time   : $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+echo "======================================================================"
+
+# ----------------------------------------------------------------------
+# Device / environment check
+# ----------------------------------------------------------------------
+
+"${PYTHON}" - <<'PY'
+import sys
+import torch
+import earth2studio
+
+print("Python:", sys.executable)
+print("PyTorch:", torch.__version__)
+print("Torch CUDA build:", torch.version.cuda)
+print("CUDA available:", torch.cuda.is_available())
+print("Earth2Studio:", earth2studio.__version__)
+
+if torch.cuda.is_available():
+    print("Selected device: CUDA")
+    print("GPU:", torch.cuda.get_device_name(0))
+else:
+    print("Selected device: CPU")
+PY
+
+check_status=$?
+
+if [ "${check_status}" -ne 0 ]; then
+    echo "Environment check failed."
+    exit "${check_status}"
+fi
+
+# ----------------------------------------------------------------------
+# Run Aurora
+#
+# run_aurora_forecasts.py automatically selects:
+#
+#   CUDA if available
+#   CPU  otherwise
+#
+# ----------------------------------------------------------------------
+
+"${PYTHON}" -u "${SCRIPT}" \
+    --start "${START_DATE}" \
+    --end "${END_DATE}" \
+    --output-dir "${OUTPUT_DIR}"
+
+status=$?
+
+# ----------------------------------------------------------------------
+# Final information
+# ----------------------------------------------------------------------
+
+echo "======================================================================"
+echo "End time     : $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+echo "Exit status  : ${status}"
+echo "======================================================================"
+
+exit "${status}"
