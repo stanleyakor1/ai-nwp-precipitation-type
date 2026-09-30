@@ -113,6 +113,65 @@ def standardize_height(ds):
     return ds
 
 
+def add_ml_ptype(ds):
+    """
+    Construct a single EDNN ptype field.
+
+    Classes:
+        -1 = invalid / non-unique
+         0 = rain
+         1 = snow
+         2 = ice pellets
+         3 = freezing rain
+    """
+
+    required = {
+        "ML_crain",
+        "ML_csnow",
+        "ML_cicep",
+        "ML_cfrzr",
+    }
+
+    missing = required - set(ds.data_vars)
+
+    if missing:
+        raise KeyError(
+            f"Cannot construct ML_ptype. Missing: {sorted(missing)}"
+        )
+
+    flags = (
+        ds["ML_crain"].astype(np.int8)
+        + ds["ML_csnow"].astype(np.int8)
+        + ds["ML_cicep"].astype(np.int8)
+        + ds["ML_cfrzr"].astype(np.int8)
+    )
+
+    ptype = xr.full_like(flags, -1, dtype=np.int8)
+
+    ptype = xr.where(
+        (flags == 1) & (ds["ML_crain"] == 1), 0, ptype
+    )
+    ptype = xr.where(
+        (flags == 1) & (ds["ML_csnow"] == 1), 1, ptype
+    )
+    ptype = xr.where(
+        (flags == 1) & (ds["ML_cicep"] == 1), 2, ptype
+    )
+    ptype = xr.where(
+        (flags == 1) & (ds["ML_cfrzr"] == 1), 3, ptype
+    )
+
+    ds["ML_ptype"] = ptype
+
+    ds["ML_ptype"].attrs = {
+        "long_name": "machine learned precipitation type",
+        "flag_values": np.array([-1, 0, 1, 2, 3], dtype=np.int8),
+        "flag_meanings":
+            "invalid rain snow ice_pellets freezing_rain",
+    }
+
+    return ds
+    
 # ============================================================
 # BOURGOUIN
 # ============================================================
@@ -574,6 +633,7 @@ def process_file(
         )
 
         ds = ds.load()
+        ds = add_ml_ptype(ds)
 
     # --------------------------------------------------------
     # Bourgouin

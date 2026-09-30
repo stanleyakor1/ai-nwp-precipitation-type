@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -N fx_bourg
+#PBS -N wxf_bourg
 #PBS -A NAML0001
 #PBS -q main
 #PBS -l select=1:ncpus=1:mem=16GB
@@ -18,7 +18,7 @@ WORKDIR="/glade/work/sakor/AI_NWP/ncar_credit"
 
 PYTHON="/glade/work/sakor/conda-envs/mlguess/bin/python"
 
-SCRIPT="${WORKDIR}/fuxi_bourgouin.py"
+SCRIPT="${WORKDIR}/wxformer_bourgouin.py"
 
 
 # ============================================================
