@@ -370,7 +370,6 @@ def calc_bourgouin_ptype(t_profile, h_profile):
             metrics,
         )
 
-    return -1, metrics
 
 
 def bourgouin_classification(ds):

@@ -281,8 +281,6 @@ def calc_bourgouin_ptype(t_profile, h_profile):
 
         return bourgouin_ip_frzr(negative, positive), metrics
 
-    return -1, metrics
-
 
 def bourgouin_classification(ds):
     temp = (

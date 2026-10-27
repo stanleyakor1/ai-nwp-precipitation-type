@@ -644,8 +644,6 @@ def calc_bourgouin_ptype(t_profile, h_profile):
             return (0 if surface >= 0 else 1), metrics
         return bourgouin_ip_frzr(negative, positive), metrics
 
-    return -1, metrics
-
 
 def bourgouin_classification(ds_interp):
     temp = (
