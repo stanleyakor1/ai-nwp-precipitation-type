@@ -141,7 +141,7 @@ Each ptype output file holds, on the 0–5 km height grid and CONUS lat/lon grid
 - Profiles: `T_HEIGHT`, `DPT_HEIGHT`, `U_HEIGHT`, `V_HEIGHT`
 - EDNN class probabilities: `ML_rain`, `ML_snow`, `ML_icep`, `ML_frzr`
 - EDNN uncertainty per class: `ML_<class>_ale` (aleatoric) and `ML_<class>_epi` (epistemic)
-- Bourgouin ptype: `BOURG_ptype` (−1 invalid, 0 rain, 1 snow, 2 ice pellets, 3 freezing rain), with the melting and refreezing energies `BOURG_PA` and `BOURG_NA`
+- Bourgouin ptype: `BOURG_ptype` (0 rain, 1 snow, 2 ice pellets, 3 freezing rain), with the melting and refreezing energies `BOURG_PA` and `BOURG_NA`
 
 ## Data
 
