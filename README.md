@@ -1,4 +1,4 @@
-# AI-NWP Precipitation-Type Evaluation
+# AI-NWP Precipitation Type Evaluation
 
 Code and analysis notebooks for diagnosing and verifying surface precipitation type (ptype) from AI-based numerical weather prediction (AI-NWP) models.
 
