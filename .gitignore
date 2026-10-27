@@ -1,4 +1,10 @@
 *.nc
+notebooks/mping_data_peep.ipynb
+
+
+
+
+
 
 cache/
 logs/
@@ -15,3 +21,4 @@ __pycache__/
 
 .DS_Store
 Thumbs.db
+*.pbs
