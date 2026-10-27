@@ -18,7 +18,7 @@ Five AI-NWP models are run from ERA5 initial conditions, and GFS is used as an o
 | GFS | Operational ([AWS archive](https://registry.opendata.aws/noaa-gfs-bdp-pds/)) | ✓ | | ✓ |
 
 - **EDNN:** the evidential deep neural network ptype classifier of [Becker et al. (2026)](#references), obtained from [miles-guess](https://github.com/ai2es/miles-guess). It returns class probabilities plus aleatoric and epistemic uncertainty for each class.
-- **Bourgouin:** a thermodynamic method that classifies from the warm (melting) and cold (refreezing) areas of the temperature profile. The implementation follows [Becker et al. (2026)](#references) and is in [`ptype/ainwp_ptype_original/bourgouin.py`](ptype/ainwp_ptype_original/bourgouin.py).
+- **Bourgouin:** a thermodynamic method that classifies from the warm (melting) and cold (refreezing) areas of the temperature profile. The implementation follows [Becker et al. (2026)](#references).
 
 ## Experiment setup
 
@@ -63,8 +63,6 @@ ai-nwp-precipitation-type/
    - WXFormer and FuXi: `ncar_credit/wxformer_bourgouin.py` and `ncar_credit/fuxi_bourgouin.py` read the CREDIT forecast output, extract the 0–5 km profiles and add the EDNN and Bourgouin ptypes.
    - GFS: `gfs/gfs_ptype.py` downloads the needed GRIB2 fields from the NOAA GFS bucket on AWS, then adds the EDNN ptype alongside the native GFS ptype.
 3. **Verify and make figures** with the notebooks below.
-
-The `.pbs` files are PBS job scripts written for NCAR Derecho. They set the account, queue and conda environment paths for the original runs, and must be edited before use elsewhere.
 
 ## Notebooks
 
@@ -147,7 +145,7 @@ Each ptype output file holds, on the 0–5 km height grid and CONUS lat/lon grid
 
 ## Data
 
-Large datasets are not stored in this repository. NetCDF files, caches, logs and PBS job output are excluded by `.gitignore`.
+Large datasets are not stored in this repository.
 
 | Data | Source |
 |---|---|
@@ -159,8 +157,7 @@ Large datasets are not stored in this repository. NetCDF files, caches, logs and
 
 ## References
 
-Becker, C., Gagne, D. J., Demuth, J., Schreck, J. S., Radford, J., Gantos, G., Kim, E., Kimpara, D., Reiner, S., Willson, J., & Wirz, C. D. (2026). Winter precipitation-type diagnosis and uncertainty quantification with a physically consistent machine learning method. *Weather and Forecasting*, 41(10), 2051–2068. Preprint: [arXiv:2512.13899](https://arxiv.org/abs/2512.13899)
-
+Becker, C., Gagne, D. J., Demuth, J., Schreck, J. S., Radford, J., Gantos, G., Kim, E., Kimpara, D., Reiner, S., Willson, J., & Wirz, C. D. (2026). Winter precipitation-type diagnosis and uncertainty quantification with a physically consistent machine learning method. *Weather and Forecasting*, 41(10), 2051–2068.
 ## Citation
 
 Citation information will be added when the associated manuscript is published.
