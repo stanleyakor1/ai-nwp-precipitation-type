@@ -8,16 +8,17 @@ Four classes are diagnosed: **rain**, **snow**, **ice pellets** and **freezing r
 
 Five AI-NWP models are run from ERA5 initial conditions, and GFS is used as an operational NWP baseline. Ptype is diagnosed with up to two methods per model, giving **12 forecast systems**:
 
-| Model | Evidential deep neural network (EDNN) | Bourgouin (thermodynamic) | Native ptype |
-|---|:---:|:---:|:---:|
-| Aurora | ✓ | ✓ | |
-| GraphCast (Operational) | ✓ | ✓ | |
-| Pangu-Weather | ✓ | ✓ | |
-| WXFormer (NCAR CREDIT) | ✓ | ✓ | |
-| FuXi (NCAR CREDIT) | ✓ | ✓ | |
-| GFS | ✓ | | ✓ |
+| Model | Run with | EDNN | Bourgouin | Native ptype |
+|---|---|:---:|:---:|:---:|
+| Aurora | [Earth2Studio](https://github.com/NVIDIA/earth2studio) | ✓ | ✓ | |
+| GraphCast (Operational) | [Earth2Studio](https://github.com/NVIDIA/earth2studio) | ✓ | ✓ | |
+| Pangu-Weather | [Earth2Studio](https://github.com/NVIDIA/earth2studio) | ✓ | ✓ | |
+| WXFormer | [NCAR CREDIT](https://github.com/NCAR/miles-credit) | ✓ | ✓ | |
+| FuXi | [NCAR CREDIT](https://github.com/NCAR/miles-credit) | ✓ | ✓ | |
+| GFS | Operational ([AWS archive](https://registry.opendata.aws/noaa-gfs-bdp-pds/)) | ✓ | | ✓ |
 
-The EDNN returns class probabilities plus aleatoric and epistemic uncertainty for each class. The Bourgouin method classifies from the warm (melting) and cold (refreezing) areas of the temperature profile.
+- **EDNN:** the evidential deep neural network ptype classifier of [Becker et al. (2026)](#references), obtained from [miles-guess](https://github.com/ai2es/miles-guess). It returns class probabilities plus aleatoric and epistemic uncertainty for each class.
+- **Bourgouin:** a thermodynamic method that classifies from the warm (melting) and cold (refreezing) areas of the temperature profile. The implementation follows [Becker et al. (2026)](#references) and is in [`ptype/ainwp_ptype_original/bourgouin.py`](ptype/ainwp_ptype_original/bourgouin.py).
 
 ## Experiment setup
 
@@ -30,9 +31,8 @@ The EDNN returns class probabilities plus aleatoric and epistemic uncertainty fo
 | Forecast day *n* | Leads from 24(*n*−1)+6 to 24*n* h, days 1–7 |
 | Domain | CONUS box, 24–50° N, 125–66° W |
 | Profile grid | 0–5000 m above ground level, 250-m spacing (21 levels) |
-| Observations | Quality-controlled mPING reports |
-| Observed class | Most-reported ptype per record; ties broken freezing rain > ice pellets > snow > rain (`OBS_RULE = "modal"`) |
-| Verification sample | Common-valid sample: only observation/day pairs where all 12 systems have a valid prediction |
+| Observed class | Most-reported ptype per mPING record; ties broken freezing rain > ice pellets > snow > rain |
+| Verification sample | Only observation/day pairs where all 12 systems have a valid prediction |
 
 ## Repository structure
 
@@ -41,49 +41,45 @@ ai-nwp-precipitation-type/
 ├── ai-weather-models/
 │   ├── script/              # Aurora, GraphCast and Pangu-Weather forecast runners (Earth2Studio)
 │   └── slurm_job_script/    # PBS job scripts for the forecast runners
-├── ncar_credit/             # EDNN + Bourgouin ptype for WXFormer and FuXi output
+├── ncar_credit/             # Profile extraction + EDNN/Bourgouin ptype from WXFormer and FuXi output
 ├── gfs/                     # GFS download (AWS), EDNN ptype and native ptype
 ├── ptype/                   # ainwp_ptype_original package: EDNN + Bourgouin ptype for Aurora, GraphCast, Pangu-Weather
 │   ├── ainwp_ptype_original/
 │   ├── scripts/run_ptype.py
 │   ├── tests/
 │   └── run-*-ptype.pbs      # PBS array jobs, one initialization per array index
-├── notebooks/               # Verification and figure notebooks (run in order, see below)
-├── figures_modal/           # Manuscript figures produced by the notebooks (modal observed-class rule)
+├── notebooks/               # Verification and figure notebooks
+├── figures_modal/           # Manuscript figures produced by the notebooks
 └── README.md
 ```
 
 ## Workflow
 
-1. **Run the AI-NWP forecasts.** `ai-weather-models/script/run_{aurora,graphcast,pangu}_forecast.py` run each model from ERA5 through Earth2Studio and write one NetCDF file per initialization. The three runners share one ERA5 cache. WXFormer and FuXi forecasts come from NCAR CREDIT and are not run by this repository.
+1. **Run the AI-NWP forecasts.**
+   - Aurora, GraphCast and Pangu-Weather: `ai-weather-models/script/run_{aurora,graphcast,pangu}_forecast.py` run each model from ERA5 with [NVIDIA Earth2Studio](https://github.com/NVIDIA/earth2studio) (version 0.17.0) and write one NetCDF file per initialization. The three runners share one ERA5 cache.
+   - WXFormer and FuXi: these models are **not run by this repository**. They were run with the [NCAR CREDIT framework](https://github.com/NCAR/miles-credit); see the [CREDIT documentation](https://miles-credit.readthedocs.io/en/latest/) and [quickstart](https://miles-credit.readthedocs.io/en/latest/quickstart.html) to install it and run the models. Pretrained 6-hour WXFormer and FuXi weights are linked from the CREDIT README.
 2. **Diagnose ptype.**
    - Aurora, GraphCast and Pangu-Weather: `ptype/scripts/run_ptype.py`. Each forecast is subset to CONUS, dew point and height above ground are computed, the profiles are interpolated to the 0–5 km grid, and the EDNN and Bourgouin ptypes are added.
-   - WXFormer and FuXi: `ncar_credit/wxformer_bourgouin.py` and `ncar_credit/fuxi_bourgouin.py`.
-   - GFS: `gfs/gfs_ptype.py` downloads the needed GRIB2 fields from the NOAA GFS bucket on AWS (`noaa-gfs-bdp-pds`), then adds the EDNN ptype alongside the native GFS ptype.
+   - WXFormer and FuXi: `ncar_credit/wxformer_bourgouin.py` and `ncar_credit/fuxi_bourgouin.py` read the CREDIT forecast output, extract the 0–5 km profiles and add the EDNN and Bourgouin ptypes.
+   - GFS: `gfs/gfs_ptype.py` downloads the needed GRIB2 fields from the NOAA GFS bucket on AWS, then adds the EDNN ptype alongside the native GFS ptype.
 3. **Verify and make figures** with the notebooks below.
 
 The `.pbs` files are PBS job scripts written for NCAR Derecho. They set the account, queue and conda environment paths for the original runs, and must be edited before use elsewhere.
 
 ## Notebooks
 
-Run notebook 01 first. It builds `common_valid_multimodel_predictions.parquet`, which notebooks 02–04 read. Notebooks 05–07 and 09 share the forecast file settings (`MODEL_DIRS`, `FILE_GLOBS`, `PTYPE_VAR`) set in notebook 05.
+| Notebook | Purpose |
+|---|---|
+| `00_mping_qc` | mPING verification sample and observed-class distribution |
+| `01_multimodel_ptype_verification_skill` | Collocation, common-valid sample, and POD/FAR/CSI/bias by forecast day |
+| `02_ip_fzra_misclassification_by_leadtime` | What each system predicts for observed ice pellets and freezing rain |
+| `03_ednn_uncertainty_by_leadtime` | EDNN uncertainty by observed class and forecast day |
+| `041_ptype_skill_vs_near_surface_temperature` | Skill as a function of RAP 2-m temperature |
+| `05`–`07` | Case study, 1800 UTC 3 Feb 2022: ptype maps, uncertainty maps, profiles |
+| `08_synoptic_ivt_feb2022` | Synoptic overview of the case-study storm |
+| `09_profile_composites_vs_rap` | Forecast profiles at ice pellet and freezing rain reports vs RAP |
 
-| Notebook | What it does | Main outputs |
-|---|---|---|
-| `00_mping_qc.ipynb` | Observed-class assignment and distribution of mPING reports by class and reporter agreement | `fig_mping_report_distribution.pdf` |
-| `01_multimodel_ptype_verification_skill.ipynb` | Collocates mPING reports with each model, builds the common-valid sample, and computes POD, FAR, CSI and frequency bias by system, forecast day and class | `multimodel_csi_bias_heatmap.pdf`, `multimodel_far_pod_heatmap.pdf`, `common_valid_multimodel_predictions.parquet`, `multimodel_skill_by_day.csv` |
-| `02_ip_fzra_misclassification_by_leadtime.ipynb` | What each system predicts when mPING observes ice pellets or freezing rain, by forecast day | `ip_fzra_fate_by_leadtime.pdf` |
-| `03_ednn_uncertainty_by_leadtime.ipynb` | EDNN total uncertainty (aleatoric + epistemic) by observed class and forecast day | `ednn_total_uncertainty_by_obsclass_leadtime.pdf`, `ednn_uncertainty_components_supp.pdf` |
-| `041_ptype_skill_vs_near_surface_temperature.ipynb` | Skill binned by a reference RAP 2-m temperature at each report (RAP fields fetched with Herbie) | `accuracy_vs_reference_temperature.pdf`, `csi_pod_vs_reference_temperature_day1.pdf` |
-| `05_case_study_ptype_maps.ipynb` | Case study, 1800 UTC 3 Feb 2022: ptype maps for all 12 systems, agreement maps, and point verification | `case_study_ptype_maps_*.pdf`, `case_study_agreement_*.pdf` |
-| `06_case_study_uncertainty_maps.ipynb` | Case study: EDNN total-uncertainty maps for forecast days 1, 3 and 7 | `case_study_total_uncertainty_*.pdf` |
-| `07_case_study_profiles.ipynb` | Case study: forecast temperature profiles at one representative mPING report per class | `case_study_profiles_*.pdf` |
-| `08_synoptic_ivt_feb2022.ipynb` | Synoptic overview of the February 2022 storm from GFS 0.25° analyses: IVT, 500-hPa height, 850-hPa temperature and freezing lines | `synoptic_ivt_feb2022.pdf` |
-| `09_profile_composites_vs_rap.ipynb` | Median forecast temperature and dew point profiles at ice pellet and freezing rain reports, and their difference from RAP | `composite_skewt_mixedphase.pdf`, `composite_bias_T_mixedphase.pdf` |
-
-Each notebook starts with a description of its method and outputs, followed by a **Configuration** cell. Paths in the configuration cells point to NCAR GLADE storage (`/glade/...`) and must be changed to your own data locations.
-
-Notebook 01 also supports a `"consensus"` observed-class rule (most-reported ptype with ≥ 70 % reporter agreement). Its outputs go to `verification_multimodel/` and `figures/` instead of the `_modal` folders.
+Run notebook 01 first: it writes `common_valid_multimodel_predictions.parquet`, which notebooks 02–04 read. Each notebook begins with a description of its method and outputs and a configuration cell. The data paths in those cells point to NCAR GLADE storage (`/glade/...`) and must be changed to your own locations. Figures are written to `figures_modal/`.
 
 ## Installation
 
@@ -96,13 +92,13 @@ cd ptype
 python -m pip install -e .
 ```
 
-The EDNN step also needs `keras`, `mlguess` and `bridgescaler`.
+The EDNN step also needs `keras`, [`miles-guess`](https://github.com/ai2es/miles-guess) and `bridgescaler`.
 
 **Notebooks:** `numpy`, `pandas`, `xarray`, `matplotlib`, `scipy`, `pyarrow`, `cartopy`, `shapely`, `metpy`, `herbie-data` (notebook 041) and `cfgrib` (notebook 08).
 
 **GFS processing:** additionally `boto3` and `numba`.
 
-**Forecast runners:** `earth2studio` with the Aurora, GraphCast and Pangu-Weather model dependencies. GraphCast runs on JAX and uses the GPU only when both PyTorch and JAX can see one.
+**Forecast runners:** [`earth2studio`](https://github.com/NVIDIA/earth2studio) 0.17.0 with the Aurora, GraphCast and Pangu-Weather model dependencies. GraphCast runs on JAX and uses the GPU only when both PyTorch and JAX can see one.
 
 ## Usage
 
@@ -151,14 +147,19 @@ Each ptype output file holds, on the 0–5 km height grid and CONUS lat/lon grid
 
 ## Data
 
-Large datasets are not stored in this repository. NetCDF files, caches, logs and PBS job output are excluded by `.gitignore`. To reproduce the results you need:
+Large datasets are not stored in this repository. NetCDF files, caches, logs and PBS job output are excluded by `.gitignore`.
 
-- **ERA5** reanalysis, used as initial conditions (fetched through Earth2Studio)
-- **AI-NWP forecasts**, produced with the runners above; WXFormer and FuXi forecasts from NCAR CREDIT
-- **GFS** 0.25° forecasts and analyses (NOAA GFS bucket on AWS)
-- **RAP** 13-km analyses (via Herbie, notebook 041)
-- **mPING** reports, quality-controlled and interpolated (`mPING_hourafter_interpolated_QC3.parquet`)
-- The trained **EDNN** model and its scaler
+| Data | Source |
+|---|---|
+| ERA5 initial conditions | [Copernicus Climate Data Store](https://cds.climate.copernicus.eu) (fetched automatically by Earth2Studio) |
+| GFS 0.25° forecasts and analyses | [NOAA GFS on the AWS Open Data Registry](https://registry.opendata.aws/noaa-gfs-bdp-pds/) |
+| RAP analyses | [NOAA NCEI Rapid Refresh](https://www.ncei.noaa.gov/products/weather-climate-models/rapid-refresh-update) (notebook 041 downloads them with Herbie) |
+| Quality-controlled mPING reports | [Becker et al. (2026)](#references) |
+| EDNN ptype model | [miles-guess](https://github.com/ai2es/miles-guess) |
+
+## References
+
+Becker, C., Gagne, D. J., Demuth, J., Schreck, J. S., Radford, J., Gantos, G., Kim, E., Kimpara, D., Reiner, S., Willson, J., & Wirz, C. D. (2026). Winter precipitation-type diagnosis and uncertainty quantification with a physically consistent machine learning method. *Weather and Forecasting*, 41(10), 2051–2068. Preprint: [arXiv:2512.13899](https://arxiv.org/abs/2512.13899)
 
 ## Citation
 
