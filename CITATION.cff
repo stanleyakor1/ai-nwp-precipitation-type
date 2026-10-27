@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata from this file."
+type: software
+title: "AI-NWP Precipitation-Type Evaluation"
+abstract: >-
+  Code and analysis notebooks for diagnosing and verifying surface
+  precipitation type (rain, snow, ice pellets and freezing rain) from
+  AI-based numerical weather prediction models (Aurora, GraphCast,
+  Pangu-Weather, WXFormer and FuXi) and GFS, using an evidential deep
+  neural network and the Bourgouin method, verified against mPING
+  reports over the contiguous United States for the 2021-22 cold season.
+authors:
+  - family-names: Akor
+    given-names: Stanley
+    affiliation: Boise State University
+repository-code: "https://github.com/stanleyakor1/ai-nwp-precipitation-type"
+keywords:
+  - precipitation type
+  - AI weather prediction
+  - evidential deep learning
+  - uncertainty quantification
+  - mPING
+  - forecast verification
