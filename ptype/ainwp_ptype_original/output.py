@@ -1,5 +1,3 @@
-"""Output utilities for the original-numerics experiment."""
-
 import os
 from pathlib import Path
 import xarray as xr

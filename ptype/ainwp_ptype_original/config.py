@@ -1,4 +1,4 @@
-"""Configuration for the original-numerics experiment."""
+
 
 from dataclasses import dataclass, field
 from pathlib import Path

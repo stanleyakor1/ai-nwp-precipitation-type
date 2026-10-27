@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-"""Run the modular pipeline with the notebook's original numerics."""
 
 import argparse
 from pathlib import Path

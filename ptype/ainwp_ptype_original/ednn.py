@@ -1,5 +1,3 @@
-"""Notebook EDNN inference, reorganized without changing feature numerics."""
-
 import numpy as np
 import pandas as pd
 import xarray as xr

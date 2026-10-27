@@ -1,5 +1,3 @@
-"""Notebook Bourgouin implementation, unchanged numerically."""
-
 import numpy as np
 import xarray as xr
 
@@ -118,7 +116,7 @@ def bourgouin_classification(ds_interp):
     out["BOURG_NA"] = (dims, negative_energy[None, ...])
     for class_id, name in enumerate(("rain", "snow", "icep", "frzr")):
         out[f"BOURG_c{name}"] = (dims, (ptype == class_id)[None, ...].astype(np.uint8))
-    out["BOURG_ptype"].attrs = {"long_name": "Bourgouin precipitation type", "flag_values": np.array([-1, 0, 1, 2, 3], dtype=np.int8), "flag_meanings": "invalid rain snow ice_pellets freezing_rain"}
+    out["BOURG_ptype"].attrs = {"long_name": "Bourgouin precipitation type", "flag_values": np.array([0, 1, 2, 3], dtype=np.int8), "flag_meanings": "rain snow ice_pellets freezing_rain"}
     out["BOURG_PA"].attrs = {"long_name": "Bourgouin positive melting energy", "units": "J kg-1"}
     out["BOURG_NA"].attrs = {"long_name": "Bourgouin negative refreezing energy magnitude", "units": "J kg-1"}
     if "lead_time" in ds_interp.coords:

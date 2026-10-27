@@ -278,8 +278,8 @@ def grid_predictions(data, predictions, valid_mask, output_uncertainties=True):
     )
     result["ML_ptype"].attrs = {
         "long_name": "machine learned precipitation type",
-        "flag_values": np.array([-1, 0, 1, 2, 3], dtype=np.int8),
-        "flag_meanings": "invalid rain snow ice_pellets freezing_rain",
+        "flag_values": np.array([0, 1, 2, 3], dtype=np.int8),
+        "flag_meanings": "rain snow ice_pellets freezing_rain",
     }
 
     if output_uncertainties:
@@ -694,8 +694,8 @@ def bourgouin_classification(ds_interp):
 
     out["BOURG_ptype"].attrs = {
         "long_name": "Bourgouin precipitation type",
-        "flag_values": np.array([-1, 0, 1, 2, 3], dtype=np.int8),
-        "flag_meanings": "invalid rain snow ice_pellets freezing_rain",
+        "flag_values": np.array([0, 1, 2, 3], dtype=np.int8),
+        "flag_meanings": "rain snow ice_pellets freezing_rain",
     }
     out["BOURG_PA"].attrs = {
         "long_name": "Bourgouin positive melting energy",

@@ -118,7 +118,6 @@ def add_ml_ptype(ds):
     Construct a single EDNN ptype field.
 
     Classes:
-        -1 = invalid / non-unique
          0 = rain
          1 = snow
          2 = ice pellets
@@ -165,9 +164,9 @@ def add_ml_ptype(ds):
 
     ds["ML_ptype"].attrs = {
         "long_name": "machine learned precipitation type",
-        "flag_values": np.array([-1, 0, 1, 2, 3], dtype=np.int8),
+        "flag_values": np.array([0, 1, 2, 3], dtype=np.int8),
         "flag_meanings":
-            "invalid rain snow ice_pellets freezing_rain",
+            "rain snow ice_pellets freezing_rain",
     }
 
     return ds
@@ -478,11 +477,11 @@ def bourgouin_classification(ds):
             "Bourgouin precipitation type",
         "flag_values":
             np.array(
-                [-1, 0, 1, 2, 3],
+                [0, 1, 2, 3],
                 dtype=np.int8,
             ),
         "flag_meanings":
-            "invalid rain snow "
+            "rain snow "
             "ice_pellets freezing_rain",
     }
 
