@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it using the metadata from this file."
 type: software
-title: "AI-NWP Precipitation-Type Evaluation"
+title: "Uncertainty-Aware Diagnosis of Precipitation Type in AI Weather Models Using an Evidential Deep Neural Network"
 abstract: >-
   Code and analysis notebooks for diagnosing and verifying surface
   precipitation type (rain, snow, ice pellets and freezing rain) from
